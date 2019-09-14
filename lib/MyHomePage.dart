@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:price_list/NewProductPage.dart';
 import 'package:price_list/ProductListing.dart';
 
 
@@ -55,12 +56,27 @@ class _MyHomePageState extends State<MyHomePage> {
               currentAccountPicture: CircleAvatar(
                 backgroundImage: AssetImage("Assets/0.webp"),
               ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    // InkWell(child: Text("Home")),
+                    // InkWell(child: Text("Add Product")),
+                    ListTile(title: Text("Home"),),
+                    ListTile(title: Text("Add Product"),),
+                    ListTile(title: Text("Developer"),),
+                  ],
+                ),
               )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: () => NewProductPage() ,
         tooltip: 'Increment',
         child: Icon(Icons.add, size: 30,),
       ), 

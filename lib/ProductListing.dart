@@ -51,16 +51,18 @@ class _ProductListingState extends State<ProductListing> {
 
    modalDialogUp() {
     print("Hello");
-    final snackBar = SnackBar(
-      backgroundColor: Colors.yellow,
-      duration: const Duration(milliseconds: 820),
-      content: Text("Yay!, A SnackBar",
-        style: TextStyle(
-          color: Colors.black
+    Future.delayed(const Duration(milliseconds: 450), () {
+      final snackBar = SnackBar(
+        backgroundColor: Colors.yellow,
+        duration: const Duration(milliseconds: 820),
+        content: Text("Yay!, A SnackBar",
+          style: TextStyle(
+            color: Colors.black
+          ),
         ),
-      ),
-      );
-    Scaffold.of(context).showSnackBar(snackBar) ;
+        );
+      Scaffold.of(context).showSnackBar(snackBar) ;
+    });
   }
 
 
