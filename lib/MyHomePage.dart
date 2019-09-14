@@ -76,7 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => NewProductPage() ,
+        onPressed: () => Navigator.push(context, MaterialPageRoute(
+          builder: (BuildContext context) {
+            return NewProductPage();
+          }
+        )) ,
         tooltip: 'Increment',
         child: Icon(Icons.add, size: 30,),
       ), 
