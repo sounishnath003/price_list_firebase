@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'Price List',
       theme: ThemeData(
         fontFamily: "Product",
-        primaryColor: Colors.white
+        primaryColor: Colors.white,
+        primarySwatch: Colors.amber,
+        iconTheme: IconThemeData(color: Colors.black)
       ),
       home: MyHomePage(title: 'My Price List'),
     );

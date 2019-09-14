@@ -28,20 +28,42 @@ class _ProductListingState extends State<ProductListing> {
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: ListTile(
-         leading: Icon(Icons.lightbulb_outline),
-         title: Text(documentSnapshot['productName'],
-         style: TextStyle(
-           fontSize: 18,
-         ),
-         ),
-         subtitle: Text('Quantity: ' + documentSnapshot['quantity'].toString()),
-         trailing: Text("\$ " + documentSnapshot['sellPrice'].toString(),
-         style: TextStyle(
-           fontSize: 20
-         ),
+       child: InkWell(
+         onTap: () => modalDialogUp(),
+                child: ListTile(
+           leading: Icon(Icons.lightbulb_outline),
+           title: Text(documentSnapshot['productName'],
+           style: TextStyle(
+             fontSize: 18,
+           ),
+           ),
+           subtitle: Text('Quantity: ' + documentSnapshot['quantity'].toString()),
+           trailing: Text("\$ " + documentSnapshot['sellPrice'].toString(),
+           style: TextStyle(
+             fontSize: 20
+           ),
+           ),
          ),
        ),
     );
   }
+
+
+   modalDialogUp() {
+    print("Hello");
+    final snackBar = SnackBar(
+      backgroundColor: Colors.yellow,
+      duration: const Duration(milliseconds: 820),
+      content: Text("Yay!, A SnackBar",
+        style: TextStyle(
+          color: Colors.black
+        ),
+      ),
+      );
+    Scaffold.of(context).showSnackBar(snackBar) ;
+  }
+
+
+
 }
+

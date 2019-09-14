@@ -52,7 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
             UserAccountsDrawerHeader(
               accountEmail: Text("flock.sinasini@gmail.com"),
               accountName: Text("Sounish Nath"),
-              currentAccountPicture: Image.network("https://www.google.com/url?sa=i&source=images&cd=&ved=&url=https%3A%2F%2Fwww.university.youth4work.com%2Fhi%2Fbgi_brainware-group-of-institutions%2Fstudent-profile&psig=AOvVaw02WajUdeyCcwyoEPWa4nog&ust=1568573749812847"),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage("Assets/0.webp"),
+              ),
               )
           ],
         ),
@@ -60,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){},
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, size: 30,),
       ), 
     );
   }
