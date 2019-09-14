@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Price List',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange
+        fontFamily: "Product",
+        primaryColor: Colors.white
       ),
       home: MyHomePage(title: 'My Price List'),
     );

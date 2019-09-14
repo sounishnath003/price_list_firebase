@@ -17,6 +17,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          Icon(Icons.search),
+          SizedBox(width: 10,),
+          Icon(Icons.photo_camera),
+          SizedBox(width: 10,),
+          Icon(Icons.list),
+          SizedBox(width: 10,),
+        ],
         title: Text(widget.title),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -37,6 +45,17 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             );
         }
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountEmail: Text("flock.sinasini@gmail.com"),
+              accountName: Text("Sounish Nath"),
+              currentAccountPicture: Image.network("https://www.google.com/url?sa=i&source=images&cd=&ved=&url=https%3A%2F%2Fwww.university.youth4work.com%2Fhi%2Fbgi_brainware-group-of-institutions%2Fstudent-profile&psig=AOvVaw02WajUdeyCcwyoEPWa4nog&ust=1568573749812847"),
+              )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){},

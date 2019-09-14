@@ -29,8 +29,18 @@ class _ProductListingState extends State<ProductListing> {
   Widget build(BuildContext context) {
     return Container(
        child: ListTile(
-         title: Text(documentSnapshot['productName']),
-         subtitle: Text(documentSnapshot['quantity'].toString()),
+         leading: Icon(Icons.lightbulb_outline),
+         title: Text(documentSnapshot['productName'],
+         style: TextStyle(
+           fontSize: 18,
+         ),
+         ),
+         subtitle: Text('Quantity: ' + documentSnapshot['quantity'].toString()),
+         trailing: Text("\$ " + documentSnapshot['sellPrice'].toString(),
+         style: TextStyle(
+           fontSize: 20
+         ),
+         ),
        ),
     );
   }
