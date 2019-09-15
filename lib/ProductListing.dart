@@ -29,7 +29,7 @@ class _ProductListingState extends State<ProductListing> {
   Widget build(BuildContext context) {
     return Container(
        child: InkWell(
-         onTap: () => modalDialogUp(),
+         onTap: () => modalDialogUp(documentSnapshot),
                 child: ListTile(
            leading: Icon(Icons.lightbulb_outline),
            title: Text(documentSnapshot['productName'],
@@ -38,7 +38,7 @@ class _ProductListingState extends State<ProductListing> {
            ),
            ),
            subtitle: Text('Quantity: ' + documentSnapshot['quantity'].toString()),
-           trailing: Text("\$ " + documentSnapshot['sellPrice'].toString(),
+           trailing: Text("₹ " + documentSnapshot['sellPrice'].toString(),
            style: TextStyle(
              fontSize: 20
            ),
@@ -49,22 +49,39 @@ class _ProductListingState extends State<ProductListing> {
   }
 
 
-   modalDialogUp() {
+   modalDialogUp(DocumentSnapshot documentSnapshot) {
     print("Hello");
     Future.delayed(const Duration(milliseconds: 450), () {
-      final snackBar = SnackBar(
+      _showDialouge() ;
+      _createSnackBar(documentSnapshot) ;
+
+      
+    });
+  }
+
+  _createSnackBar(DocumentSnapshot documentSnapshot) {
+    final snackBar = SnackBar(
         backgroundColor: Colors.yellow,
         duration: const Duration(milliseconds: 820),
-        content: Text("Yay!, A SnackBar",
+        content: Text(documentSnapshot['productName'] + " viewed",
           style: TextStyle(
             color: Colors.black
           ),
         ),
         );
       Scaffold.of(context).showSnackBar(snackBar) ;
-    });
   }
 
+_showDialouge() {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("1234"),
+      );
+    }
+    );
+}
 
 
 }
