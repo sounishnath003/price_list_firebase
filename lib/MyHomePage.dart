@@ -36,9 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection('products').snapshots(),
           builder: (context, snapshot) {
-            if (snapshot == null) {
-              return Center(child: CircularProgressIndicator(),);
-            }
             if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),

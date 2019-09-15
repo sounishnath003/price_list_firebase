@@ -82,13 +82,19 @@ class _ProductListingState extends State<ProductListing> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          SizedBox(width: 8,),
+                          SizedBox(
+                            width: 8,
+                          ),
                           Icon(Icons.edit),
-                          SizedBox(width: 8,),
+                          SizedBox(
+                            width: 8,
+                          ),
                           Icon(Icons.delete),
                         ],
                       )
@@ -105,25 +111,19 @@ class _ProductListingState extends State<ProductListing> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: <Widget>[
+                    _rowWiseDetails("Quantity :", documentSnapshot['quantity']),
                     _rowWiseDetails(
-                        "Quantity :", documentSnapshot['quantity']),
-                    _rowWiseDetails("Cost Price :",
-                        "₹ " + documentSnapshot['costPrice']),
-                    _rowWiseDetails("Sell Price :",
-                        "₹ " + documentSnapshot['sellPrice']),
-                    Text.rich(
+                        "Cost Price :", "₹ " + documentSnapshot['costPrice']),
+                    _rowWiseDetails(
+                        "Sell Price :", "₹ " + documentSnapshot['sellPrice']),
+                    Text.rich(TextSpan(children: [
                       TextSpan(
-                        children: [
-                          TextSpan(text: "Last updated : ",
-                          ),
-                          TextSpan(text: documentSnapshot['updatedAt'] ,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          )
-                          ),
-                        ]
-                      )
-                    )
+                        text: "Last updated : ",
+                      ),
+                      TextSpan(
+                          text: documentSnapshot['updatedAt'],
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ]))
                   ],
                 ),
               )

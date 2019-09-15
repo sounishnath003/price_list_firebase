@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:price_list/BackEndLogics/CrudAction.dart';
-import 'package:price_list/ProductListing.dart';
 
 class NewProductPage extends StatefulWidget {
   NewProductPage({Key key}) : super(key: key);
@@ -13,11 +14,20 @@ class _NewProductPageState extends State<NewProductPage> {
   String quantity;
   String costPrice;
   String sellPrice;
-  var date = DateTime.now() ;
+  var date = DateTime.now();
   // var dateTime = date.toString().substring(0, 11).replaceAll('-',' ') ;
-  
+
+  final _text = TextEditingController();
+  bool _validate = false;
 
   CrudAction _crudAction = new CrudAction();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _text.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,29 +52,38 @@ class _NewProductPageState extends State<NewProductPage> {
               height: MediaQuery.of(context).size.height * 0.01,
             ),
             TextField(
-              onChanged: (value) => (this.productName = value),
+              controller: _text,
+              onChanged: (value) => ((this.productName = value)),
               textInputAction: TextInputAction.next,
               maxLength: 30,
+              autofocus: true,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                  focusColor: Colors.amber, hintText: "Enter product name"),
+                  errorText: _validate ? " value can\'t be empty" : null,
+                  focusColor: Colors.amber,
+                  hintText: "Enter product name"),
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
-              onChanged: (value) => (this.quantity = value),
+              // controller: _text,
+              onChanged: (value) => ((this.quantity = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  focusColor: Colors.amber, hintText: "Enter quantity"),
+                  errorText: _validate ? " value can\'t be empty" : null,
+                  focusColor: Colors.amber,
+                  hintText: "Enter quantity"),
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
-              onChanged: (value) => (this.costPrice = value),
+              // controller: _text,
+              onChanged: (value) => ((this.costPrice = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                  errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.amber,
                   hintText: "Enter cost price (INR) "),
             ),
@@ -72,9 +91,11 @@ class _NewProductPageState extends State<NewProductPage> {
               height: 20,
             ),
             TextField(
-              onChanged: (value) => (this.sellPrice = value),
+              // controller: _text,
+              onChanged: (value) => ((this.sellPrice = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
+                  errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.yellow,
                   hintText: "Enter sell price (INR) "),
             ),
@@ -93,14 +114,17 @@ class _NewProductPageState extends State<NewProductPage> {
                   'quantity': this.quantity,
                   'costPrice': this.costPrice,
                   'sellPrice': this.sellPrice,
-                  'updatedAt': date.toString().substring(0, 11).replaceAll('-',' ')
+                  'updatedAt':
+                      date.toString().substring(0, 11).replaceAll('-', ' ')
                 };
 
                 _crudAction.addProductDetails(productDetails).then((result) {
-                  dialoagTrigger(context);
-                }).catchError((e) => print(e));
+                    Navigator.of(context).pop();
+                    dialoagTrigger(context);
+                  }).catchError((e) => print(e));
+                  
+                  clearDefaults();
 
-                clearDefaults();
               },
             )
           ],
@@ -114,7 +138,7 @@ class _NewProductPageState extends State<NewProductPage> {
     this.quantity = "";
     this.costPrice = "";
     this.sellPrice = "";
-    this.date = null ;
+    this.date = null;
   }
 
   Future<bool> dialoagTrigger(BuildContext context) async {
@@ -122,15 +146,19 @@ class _NewProductPageState extends State<NewProductPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Job done'),
-            titlePadding: const EdgeInsets.all(5),
-            content: Text("$this.productName has been added succesfully"),
-            contentPadding: const EdgeInsets.all(10),
+            title: Text("Notice", 
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+            ),
+            titlePadding: const EdgeInsets.all(16),
+            content: Text("The item is successfully added."),
+            contentPadding: const EdgeInsets.all(16),
             actions: <Widget>[
               FlatButton(
                 child: Text('Alright'),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop();
                 },
               )
             ],
