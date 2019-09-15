@@ -52,8 +52,9 @@ class _ProductListingState extends State<ProductListing> {
    modalDialogUp(DocumentSnapshot documentSnapshot) {
     print("Hello");
     Future.delayed(const Duration(milliseconds: 450), () {
-      _showDialouge() ;
-      _createSnackBar(documentSnapshot) ;
+      setState(() {
+        _showDialouge(documentSnapshot) ;
+      });
 
       
     });
@@ -69,15 +70,56 @@ class _ProductListingState extends State<ProductListing> {
           ),
         ),
         );
-      Scaffold.of(context).showSnackBar(snackBar) ;
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
-_showDialouge() {
+_showDialouge(DocumentSnapshot documentSnapshot) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("1234"),
+      return SimpleDialog(
+        title: Text(documentSnapshot['productName'],
+        textAlign: TextAlign.center,
+        ),
+        titlePadding: const EdgeInsets.symmetric(
+        horizontal: 30,
+        vertical: 20
+        ),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Text("Quantity ", 
+                          style: TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 20
+                            )
+                            ,
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Text(documentSnapshot['quantity'].toString(),
+                        style: TextStyle(
+                          fontSize: 22
+                        ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+          )
+        ],
       );
     }
     );

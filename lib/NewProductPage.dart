@@ -34,7 +34,7 @@ class _NewProductPageState extends State<NewProductPage> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 prefix: Icon(Icons.text_fields),
-                focusColor: Colors.yellow,
+                focusColor: Colors.amber,
                 hintText: "Enter product name"
                 ),
             ),
@@ -45,7 +45,7 @@ class _NewProductPageState extends State<NewProductPage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 prefix: Icon(Icons.text_fields),
-                focusColor: Colors.yellow,
+                focusColor: Colors.amber,
                 hintText: "Enter quantity"
                 ),
             ),
@@ -56,7 +56,7 @@ class _NewProductPageState extends State<NewProductPage> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 prefix: Icon(Icons.text_fields),
-                focusColor: Colors.yellow,
+                focusColor: Colors.amber,
                 hintText: "Enter cost price (INR) "
                 ),
             ),
@@ -75,7 +75,7 @@ class _NewProductPageState extends State<NewProductPage> {
               height: 40,
             ),
             FlatButton(
-              color: Colors.yellow,
+              color: Colors.amber,
               child: Text("SAVE",
               style: TextStyle(
                 fontWeight: FontWeight.bold
