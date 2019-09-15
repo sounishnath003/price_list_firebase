@@ -106,11 +106,11 @@ class _ProductListingState extends State<ProductListing> {
                 child: Column(
                   children: <Widget>[
                     _rowWiseDetails(
-                        "Quantity :", documentSnapshot['quantity'].toString()),
+                        "Quantity :", documentSnapshot['quantity']),
                     _rowWiseDetails("Cost Price :",
-                        "₹ " + documentSnapshot['costPrice'].toString()),
+                        "₹ " + documentSnapshot['costPrice']),
                     _rowWiseDetails("Sell Price :",
-                        "₹ " + documentSnapshot['sellPrice'].toString()),
+                        "₹ " + documentSnapshot['sellPrice']),
                     Text.rich(
                       TextSpan(
                         children: [
