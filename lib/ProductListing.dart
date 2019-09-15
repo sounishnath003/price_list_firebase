@@ -50,7 +50,7 @@ class _ProductListingState extends State<ProductListing> {
     });
   }
 
-  _createSnackBar(DocumentSnapshot documentSnapshot) {
+  _createSacnkBar(DocumentSnapshot documentSnapshot) {
     final snackBar = SnackBar(
       backgroundColor: Colors.yellow,
       duration: const Duration(milliseconds: 820),
@@ -83,8 +83,8 @@ class _ProductListingState extends State<ProductListing> {
                 child: Column(
                   children: <Widget>[
                     _rowWiseDetails("Quantity", documentSnapshot['quantity'].toString()),
-                    _rowWiseDetails("Cost Price", documentSnapshot['costPrice'].toString()),
-                    _rowWiseDetails("Sell Price", documentSnapshot['sellPrice'].toString()),
+                    _rowWiseDetails("Cost Price", "₹ " + documentSnapshot['costPrice'].toString()),
+                    _rowWiseDetails("Sell Price", "₹ " + documentSnapshot['sellPrice'].toString()),
                   ],
                 ),
               )

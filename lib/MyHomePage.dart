@@ -46,16 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (context, int index) {
                 return Dismissible(
                   direction: DismissDirection.horizontal,
-                  onDismissed: (direction) {
-                    setState(() {
-                      // TODO: implement deletedRequest
+                  // TODO: implement deletedRequest
+                  // onDismissed: (direction) {
+                  //   setState(() {
                       // snapshot.data.documents.removeAt(index) ;
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("$snapshot.data.documents[index]['productName'] dismissed"))
-                        );
-                    });
-                  },
+                  //     Scaffold.of(context).showSnackBar(
+                  //       SnackBar(
+                  //         content: Text("Dismissed"))
+                  //       );
+                  //   });
+                  // },
                   background: Container(
                     color: Colors.redAccent[100],
                   ),
