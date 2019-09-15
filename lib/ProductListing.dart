@@ -67,24 +67,63 @@ class _ProductListingState extends State<ProductListing> {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: Text(
-              documentSnapshot['productName'],
-              style: TextStyle(
-                // backgroundColor: Colors.amberAccent,
-                fontSize: 22,  
+            title: Container(
+              padding: const EdgeInsets.all(16),
+              color: Colors.amberAccent[200],
+              child: Row(
+                children: <Widget>[
+                  Flex(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        documentSnapshot['productName'],
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(width: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          SizedBox(width: 8,),
+                          Icon(Icons.edit),
+                          SizedBox(width: 8,),
+                          Icon(Icons.delete),
+                        ],
+                      )
+                    ],
+                    direction: Axis.horizontal,
+                  ),
+                ],
               ),
-              textAlign: TextAlign.center,
             ),
             titlePadding:
                 const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: <Widget>[
-                    _rowWiseDetails("Quantity", documentSnapshot['quantity'].toString()),
-                    _rowWiseDetails("Cost Price", "₹ " + documentSnapshot['costPrice'].toString()),
-                    _rowWiseDetails("Sell Price", "₹ " + documentSnapshot['sellPrice'].toString()),
+                    _rowWiseDetails(
+                        "Quantity :", documentSnapshot['quantity'].toString()),
+                    _rowWiseDetails("Cost Price :",
+                        "₹ " + documentSnapshot['costPrice'].toString()),
+                    _rowWiseDetails("Sell Price :",
+                        "₹ " + documentSnapshot['sellPrice'].toString()),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Created at : ",
+                          ),
+                          TextSpan(text: "14 sept, 2019",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          )
+                          ),
+                        ]
+                      )
+                    )
                   ],
                 ),
               )
@@ -96,32 +135,33 @@ class _ProductListingState extends State<ProductListing> {
   _rowWiseDetails(String string, String details) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Text(
-                "$string",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold
-                    ),
-              )
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              Text(
-                "$details",
-                style: TextStyle(
-                  fontSize: 22,
-                ),
-              )
-            ],
-          )
-        ],
+      child: Container(
+        // color: Colors.redAccent[100],
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text(
+                  "$string",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  "$details",
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
