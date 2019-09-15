@@ -13,6 +13,9 @@ class _NewProductPageState extends State<NewProductPage> {
   String quantity;
   String costPrice;
   String sellPrice;
+  var date = DateTime.now() ;
+  // var dateTime = date.toString().substring(0, 11).replaceAll('-',' ') ;
+  
 
   CrudAction _crudAction = new CrudAction();
 
@@ -41,7 +44,7 @@ class _NewProductPageState extends State<NewProductPage> {
             TextField(
               onChanged: (value) => (this.productName = value),
               textInputAction: TextInputAction.next,
-              maxLength: 15,
+              maxLength: 30,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   focusColor: Colors.amber, hintText: "Enter product name"),
@@ -89,25 +92,12 @@ class _NewProductPageState extends State<NewProductPage> {
                   'productName': this.productName,
                   'quantity': this.quantity,
                   'costPrice': this.costPrice,
-                  'sellPrice': this.sellPrice
+                  'sellPrice': this.sellPrice,
+                  'updatedAt': date.toString().substring(0, 11).replaceAll('-',' ')
                 };
 
                 _crudAction.addProductDetails(productDetails).then((result) {
                   dialoagTrigger(context);
-                  Navigator.of(context).pop();
-
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    SnackBar snackbar = SnackBar(
-                      content: Text("$this.productName added successfully"),
-                      backgroundColor: Colors.amber,
-                      duration: const Duration(milliseconds: 1000),
-                    );
-                    Scaffold.of(context).showSnackBar(snackbar);
-
-                    setState(() {
-                      ProductListing(context: context);
-                    });
-                  });
                 }).catchError((e) => print(e));
 
                 clearDefaults();
@@ -124,6 +114,7 @@ class _NewProductPageState extends State<NewProductPage> {
     this.quantity = "";
     this.costPrice = "";
     this.sellPrice = "";
+    this.date = null ;
   }
 
   Future<bool> dialoagTrigger(BuildContext context) async {

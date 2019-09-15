@@ -114,9 +114,9 @@ class _ProductListingState extends State<ProductListing> {
                     Text.rich(
                       TextSpan(
                         children: [
-                          TextSpan(text: "Created at : ",
+                          TextSpan(text: "Last updated : ",
                           ),
-                          TextSpan(text: "14 sept, 2019",
+                          TextSpan(text: documentSnapshot['updatedAt'] ,
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           )
