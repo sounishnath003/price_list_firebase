@@ -19,4 +19,8 @@ class CrudAction {
     Firestore.instance.collection('products').document(docID).delete().catchError((e) => print(e)) ;
   }
 
+   getAllData() async {
+    return await Firestore.instance.collection('products').getDocuments().catchError((e) => print(e)) ;
+  }
+
 }

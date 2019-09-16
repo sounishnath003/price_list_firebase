@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:price_list/MyHomePage.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+   
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
+   runApp(MyApp()) ;
+   
+   }
 
 class MyApp extends StatelessWidget {
   @override
@@ -15,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         iconTheme: IconThemeData(color: Colors.black)
       ),
-      home: MyHomePage(title: 'My Price List'),
+      home: MyHomePage(title: 'My Price List')
 
     );
   }

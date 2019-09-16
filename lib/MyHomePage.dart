@@ -13,17 +13,34 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+QuerySnapshot allProducts;
+
 class _MyHomePageState extends State<MyHomePage> {
+  CrudAction crudAction = new CrudAction();
 
-  CrudAction crudAction = new CrudAction() ;
+  @override
+  void initState() {
+    super.initState();
 
+    crudAction.getAllData().then((results) {
+      setState(() {
+        allProducts = results;
+      });
+    });
+    // print(allProducts.documents.length) ;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          Icon(Icons.search),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(context: context, delegate: DataSearch());
+            },
+          ),
           SizedBox(
             width: 10,
           ),
@@ -51,21 +68,19 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (context, int index) {
                 return Dismissible(
                   direction: DismissDirection.horizontal,
-                  // TODO: implement deletedRequest
                   onDismissed: (direction) {
                     setState(() {
                       // snapshot.data.documents.removeAt(index) ;
-                      crudAction.deleteProduct(snapshot.data.documents[index].documentID);
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Item succefully deleted"),
-                          backgroundColor: Colors.yellow,
-                          action: SnackBarAction(
-                            label: "UNDO",
-                            onPressed: () {},
-                          ),
-                          )
-                        );
+                      crudAction.deleteProduct(
+                          snapshot.data.documents[index].documentID);
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text("Item succefully deleted"),
+                        backgroundColor: Colors.yellow,
+                        action: SnackBarAction(
+                          label: "UNDO",
+                          onPressed: () {},
+                        ),
+                      ));
                     });
                   },
                   background: Container(
@@ -128,3 +143,82 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class DataSearch extends SearchDelegate {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = "";
+          },
+          icon: Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, null);
+      },
+      icon: AnimatedIcon(
+        icon: AnimatedIcons.arrow_menu,
+        progress: transitionAnimation,
+      ),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // TODO: implement buildResults
+    return InkWell(
+      onTap: () {
+        _showDialoauge(context);
+      }
+      ,
+    );
+  }
+
+  _showDialoauge(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          
+        );
+      }
+
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    
+    // final productDetailsLists = query.isEmpty ? allProducts.documents.toList() : allProducts.documents[0].data['productName'].where((p) => p.startsWith(query).toList() ) ;
+
+
+    // final productDetailsList = query.isEmpty ? allProducts.documents.toList() : allProducts.documents[allProducts.documents.length].data['productName'].toString().startsWith(query) ;
+
+
+    return ListView.builder(
+        itemCount: allProducts.documents.length ,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            leading: Icon(Icons.lightbulb_outline),
+            title: Text.rich(TextSpan(
+              text: allProducts.documents[index].data['productName'],
+              style: TextStyle(),
+            ),
+            ),
+            subtitle: Text(allProducts.documents[index].data['quantity'].toString()),
+            trailing: Text(
+            "₹ " + allProducts.documents[index].data['sellPrice'].toString(),
+            style: TextStyle(fontSize: 20),
+          ),
+          );
+        });
+  }
+}
+
+//  allProducts.documents[index].data['productName']
