@@ -106,7 +106,7 @@ class _EditProductPageState extends State<EditProductPage> {
             FlatButton(
               color: Colors.amber,
               child: Text(
-                "SAVE",
+                "Update Details",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               onPressed: () {
@@ -121,6 +121,8 @@ class _EditProductPageState extends State<EditProductPage> {
                 print(documentSnapshot.documentID) ;
 
                 crudAction.updateProductDetails(documentSnapshot.documentID, editedProductDetails) ;
+
+                Navigator.of(context).pop() ;
               },
             )
           ],

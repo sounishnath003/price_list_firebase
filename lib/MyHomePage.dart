@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:price_list/BackEndLogics/CrudAction.dart';
 import 'package:price_list/NewProductPage.dart';
 import 'package:price_list/ProductListing.dart';
 
@@ -13,6 +14,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  CrudAction crudAction = new CrudAction() ;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,15 +52,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Dismissible(
                   direction: DismissDirection.horizontal,
                   // TODO: implement deletedRequest
-                  // onDismissed: (direction) {
-                  //   setState(() {
+                  onDismissed: (direction) {
+                    setState(() {
                       // snapshot.data.documents.removeAt(index) ;
-                  //     Scaffold.of(context).showSnackBar(
-                  //       SnackBar(
-                  //         content: Text("Dismissed"))
-                  //       );
-                  //   });
-                  // },
+                      crudAction.deleteProduct(snapshot.data.documents[index].documentID);
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Item succefully deleted"),
+                          backgroundColor: Colors.yellow,
+                          action: SnackBarAction(
+                            label: "UNDO",
+                            onPressed: () {},
+                          ),
+                          )
+                        );
+                    });
+                  },
                   background: Container(
                     color: Colors.redAccent[100],
                   ),

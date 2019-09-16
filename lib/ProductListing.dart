@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:price_list/BackEndLogics/CrudAction.dart';
 import 'package:price_list/EditProductPage.dart';
 
 class ProductListing extends StatefulWidget {
@@ -15,6 +16,8 @@ class ProductListing extends StatefulWidget {
 class _ProductListingState extends State<ProductListing> {
   final BuildContext context;
   final DocumentSnapshot documentSnapshot;
+
+  CrudAction crudAction = new CrudAction() ;
 
   _ProductListingState({this.context, this.documentSnapshot});
 
@@ -103,9 +106,16 @@ class _ProductListingState extends State<ProductListing> {
                             },
                           ),
                           SizedBox(
-                            width: 8,
+                            width: 4,
                           ),
-                          Icon(Icons.delete),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              crudAction.deleteProduct(documentSnapshot.documentID) ;
+                              Navigator.of(context).pop() ;
+                               
+                            },
+                          ),
                         ],
                       )
                     ],
@@ -141,6 +151,32 @@ class _ProductListingState extends State<ProductListing> {
           );
         });
   }
+
+  Future<bool> dialoagTrigger(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Alert", 
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+            ),
+            titlePadding: const EdgeInsets.all(16),
+            content: Text("The item is deleted forever."),
+            contentPadding: const EdgeInsets.all(16),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Alright'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
 
 
   _rowWiseDetails(String string, String details) {

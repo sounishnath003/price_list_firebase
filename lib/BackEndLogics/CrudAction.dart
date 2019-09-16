@@ -10,13 +10,13 @@ class CrudAction {
   }
 
   // updateProductDetails methods() 
-  Future<void> updateProductDetails(selectedDoc, newValues) {
+  Future<void> updateProductDetails(selectedDoc, newValues) async {
     Firestore.instance.collection('products').document(selectedDoc).updateData(newValues).catchError((e) => print(e)) ;
   }
 
   // deleteProductID methods()
   Future<void> deleteProduct(docID) async {
-    Firestore.instance.collection('products')..document(docID).delete().catchError((e) => print(e)) ;
+    Firestore.instance.collection('products').document(docID).delete().catchError((e) => print(e)) ;
   }
 
 }
