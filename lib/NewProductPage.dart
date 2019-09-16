@@ -15,7 +15,7 @@ class _NewProductPageState extends State<NewProductPage> {
   String costPrice;
   String sellPrice;
   var date = DateTime.now();
-  // var dateTime = date.toString().substring(0, 11).replaceAll('-',' ') ;
+
 
   final _text = TextEditingController();
   bool _validate = false;
