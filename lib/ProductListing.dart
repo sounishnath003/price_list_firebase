@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:price_list/EditProductPage.dart';
 
 class ProductListing extends StatefulWidget {
   final BuildContext context;
@@ -91,7 +92,16 @@ class _ProductListingState extends State<ProductListing> {
                           SizedBox(
                             width: 8,
                           ),
-                          Icon(Icons.edit),
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return EditProductPage(documentSnapshot: documentSnapshot,) ;
+                                }
+                              ));
+                            },
+                          ),
                           SizedBox(
                             width: 8,
                           ),
@@ -131,6 +141,7 @@ class _ProductListingState extends State<ProductListing> {
           );
         });
   }
+
 
   _rowWiseDetails(String string, String details) {
     return Padding(
