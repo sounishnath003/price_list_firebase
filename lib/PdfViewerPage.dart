@@ -9,7 +9,6 @@ class PdfViewerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PDFViewerScaffold(
       path: path,
-      
     );
   }
 }

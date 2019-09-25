@@ -7,7 +7,7 @@ import 'package:price_list/BackEndLogics/CrudAction.dart';
 import 'package:price_list/NewProductPage.dart';
 import 'package:price_list/PdfViewerPage.dart';
 import 'package:price_list/ProductListing.dart';
-import 'package:pdf/widgets.dart' as pdfLib ;
+import 'package:pdf/widgets.dart' as pdfLib;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -19,31 +19,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 QuerySnapshot allProducts;
+QuerySnapshot productsForPdfListing;
 
 class _MyHomePageState extends State<MyHomePage> {
   CrudAction crudAction = new CrudAction();
 
   // for querying the firestore objects
-  Future<QuerySnapshot> querySnapshotProducts ;
-  QuerySnapshot documentSnapshot ;
+  Future<QuerySnapshot> querySnapshotProducts;
+  QuerySnapshot documentSnapshot;
 
   Future<void> refreshLists() async {
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      querySnapshotProducts = Firestore.instance.collection('products').getDocuments() ;
-      querySnapshotProducts.then((res) => {
-        documentSnapshot = res
-      });
+      querySnapshotProducts =
+          Firestore.instance.collection('products').getDocuments();
+      querySnapshotProducts.then((res) => {documentSnapshot = res});
     });
   }
 
   @override
   void initState() {
     crudAction.getAllData().then((result) => {
-      setState(() {
-        querySnapshotProducts = result ;
-      })
-    });
+          setState(() {
+            productsForPdfListing = result;
+          })
+        });
     super.initState();
   }
 
@@ -77,7 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
             stream: Firestore.instance.collection('products').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(),) ;
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
               if (!snapshot.hasData) {
                 return Center(
@@ -95,8 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         crudAction.deleteProduct(
                             snapshot.data.documents[index].documentID);
                         Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text("Item succefully deleted",
-                          style: TextStyle(color: Colors.black),
+                          content: Text(
+                            "Item succefully deleted",
+                            style: TextStyle(color: Colors.black),
                           ),
                           backgroundColor: Colors.yellow,
                           action: SnackBarAction(
@@ -168,36 +171,51 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-  generatePdf(BuildContext context) async {
-    final List<DocumentSnapshot> data = allProducts.documents.toList() ;
+generatePdf(BuildContext context) async {
+  final data = productsForPdfListing.documents;
 
-    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
-    pdf.addPage(
-      pdfLib.MultiPage(
-        build: (context) => [
-          pdfLib.Table.fromTextArray(
-            context: context,
-            data: <List<String>> [
-              <String>['Name' "couach", "player", "product"],
-              ...data.map((item) => [
-                item.data['productName'], item.data['quantity'], item.data['costPrice'], item.data['sellPrice']
-              ])
-            ]
-            )
-        ]
-      )
-    );
+  final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
+  pdf.addPage(pdfLib.MultiPage(
+      build: (context) => [
+            pdfLib.Column(
+              mainAxisAlignment: pdfLib.MainAxisAlignment.center,
+              crossAxisAlignment: pdfLib.CrossAxisAlignment.center,
+              children: <pdfLib.Widget>[
+              pdfLib.Text("Stock Managments Details",
+                style: pdfLib.TextStyle(
+                  fontSize: 22
+                )
+              ),
+              pdfLib.SizedBox(height: 20),
+              pdfLib.Table.fromTextArray(context: context, data: <List<String>>[
+                <String>[
+                  // "ID",
+                  "Product Name",
+                  "Quantity",
+                  "Cost Price",
+                  "Sell Price"
+                ],
+                ...data.map((item) => [
+                      // item.documentID,
+                      item.data["productName"],
+                      item.data['quantity'],
+                      item.data['costPrice'],
+                      item.data['sellPrice']
+                    ])
+              ]),
+            ])
+          ]));
 
-    final String dir = (await getApplicationDocumentsDirectory()).path;
-    final String path = '$dir/baseball_teams.pdf';
-    final File file = File(path);
-    await file.writeAsBytes(pdf.save());
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => PdfViewerPage(path: path),
-      ),
-    );
-  }
+  final String dir = (await getApplicationDocumentsDirectory()).path;
+  final String path = '$dir/${DateTime.now()}.pdf';
+  final File file = File(path);
+  await file.writeAsBytes(pdf.save());
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => PdfViewerPage(path: path),
+    ),
+  );
+}
 
 class DataSearch extends SearchDelegate {
   @override
@@ -271,6 +289,5 @@ class DataSearch extends SearchDelegate {
 }
 
 //  allProducts.documents[index].data['productName']
-
 
 // generatePdf(context, allProducts.documents)
