@@ -91,7 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         crudAction.deleteProduct(
                             snapshot.data.documents[index].documentID);
                         Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text("Item succefully deleted"),
+                          content: Text("Item succefully deleted",
+                          style: TextStyle(color: Colors.black),
+                          ),
                           backgroundColor: Colors.yellow,
                           action: SnackBarAction(
                             label: "UNDO",

@@ -7,6 +7,7 @@ class CrudAction {
   Future<void> addProductDetails(productDetails) async {
     // Firestore.instance.collection('products').add(productDetails).catchError((e) => print(e));
 
+    // works well with streamBuilder to update data efficently
     Firestore.instance.runTransaction((Transaction crudTransaction) async {
       CollectionReference reference = Firestore.instance.collection('products') ;
       reference.add(productDetails) ;

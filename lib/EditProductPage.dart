@@ -120,7 +120,9 @@ class _EditProductPageState extends State<EditProductPage> {
                 crudAction.updateProductDetails(documentSnapshot.documentID, editedProductDetails) ;
                 
                 Navigator.of(context).pop();
+                dialoagTrigger(context) ;
                 Navigator.of(context).pop();
+
 
               },
             )
@@ -129,6 +131,33 @@ class _EditProductPageState extends State<EditProductPage> {
       ),
     );
   }
+
+   Future<bool> dialoagTrigger(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Notice", 
+            style: TextStyle(
+              fontWeight: FontWeight.bold
+            ),
+            ),
+            titlePadding: const EdgeInsets.all(16),
+            content: Text("The item is successfully updated."),
+            contentPadding: const EdgeInsets.all(16),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Alright'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+}
+
 
   initializeValuesWithPrevious() {
     this.productName = documentSnapshot['productName'];
