@@ -18,16 +18,28 @@ QuerySnapshot allProducts;
 class _MyHomePageState extends State<MyHomePage> {
   CrudAction crudAction = new CrudAction();
 
-  @override
-  void initState() {
-    super.initState();
+  // for querying the firestore objects
+  Future<QuerySnapshot> querySnapshotProducts ;
+  QuerySnapshot documentSnapshot ;
 
-    crudAction.getAllData().then((results) {
-      setState(() {
-        allProducts = results;
+  Future<void> refreshLists() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    setState(() {
+      querySnapshotProducts = Firestore.instance.collection('products').getDocuments() ;
+      querySnapshotProducts.then((res) => {
+        documentSnapshot = res
       });
     });
-    // print(allProducts.documents.length) ;
+  }
+
+  @override
+  void initState() {
+    crudAction.getAllData().then((result) => {
+      setState(() {
+        querySnapshotProducts = result ;
+      })
+    });
+    super.initState();
   }
 
   @override
@@ -55,46 +67,50 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         title: Text(widget.title),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('products').snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (context, int index) {
-                return Dismissible(
-                  direction: DismissDirection.horizontal,
-                  onDismissed: (direction) {
-                    setState(() {
-                      // snapshot.data.documents.removeAt(index) ;
-                      crudAction.deleteProduct(
-                          snapshot.data.documents[index].documentID);
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                        content: Text("Item succefully deleted"),
-                        backgroundColor: Colors.yellow,
-                        action: SnackBarAction(
-                          label: "UNDO",
-                          onPressed: () {},
-                        ),
-                      ));
-                    });
-                  },
-                  background: Container(
-                    color: Colors.redAccent[100],
-                  ),
-                  child: ProductListing(
-                    context: context,
-                    documentSnapshot: snapshot.data.documents[index],
-                  ),
-                  key: Key("$index"),
+      body: RefreshIndicator(
+        onRefresh: () => refreshLists(),
+        child: StreamBuilder<QuerySnapshot>(
+            // stream: _querySnapshotProducts, //Firestore.instance.collection('products').snapshots(),
+            stream: Firestore.instance.collection('products').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            );
-          }),
+              }
+              return ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, int index) {
+                  return Dismissible(
+                    direction: DismissDirection.horizontal,
+                    onDismissed: (direction) {
+                      setState(() {
+                        // snapshot.data.documents.removeAt(index) ;
+                        crudAction.deleteProduct(
+                            snapshot.data.documents[index].documentID);
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Item succefully deleted"),
+                          backgroundColor: Colors.yellow,
+                          action: SnackBarAction(
+                            label: "UNDO",
+                            onPressed: () {},
+                          ),
+                        ));
+                      });
+                    },
+                    background: Container(
+                      color: Colors.redAccent[100],
+                    ),
+                    child: ProductListing(
+                      context: context,
+                      documentSnapshot: snapshot.data.documents[index],
+                    ),
+                    key: Key("${snapshot.data.documents[index].documentID}"),
+                  );
+                },
+              );
+            }),
+      ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -175,47 +191,41 @@ class DataSearch extends SearchDelegate {
     return InkWell(
       onTap: () {
         _showDialoauge(context);
-      }
-      ,
+      },
     );
   }
 
   _showDialoauge(BuildContext context) {
     return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          
-        );
-      }
-
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog();
+        });
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    
     // final productDetailsLists = query.isEmpty ? allProducts.documents.toList() : allProducts.documents[0].data['productName'].where((p) => p.startsWith(query).toList() ) ;
-
 
     // final productDetailsList = query.isEmpty ? allProducts.documents.toList() : allProducts.documents[allProducts.documents.length].data['productName'].toString().startsWith(query) ;
 
-
     return ListView.builder(
-        itemCount: allProducts.documents.length ,
+        itemCount: allProducts.documents.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             leading: Icon(Icons.lightbulb_outline),
-            title: Text.rich(TextSpan(
-              text: allProducts.documents[index].data['productName'],
-              style: TextStyle(),
+            title: Text.rich(
+              TextSpan(
+                text: allProducts.documents[index].data['productName'],
+                style: TextStyle(),
+              ),
             ),
-            ),
-            subtitle: Text(allProducts.documents[index].data['quantity'].toString()),
+            subtitle:
+                Text(allProducts.documents[index].data['quantity'].toString()),
             trailing: Text(
-            "₹ " + allProducts.documents[index].data['sellPrice'].toString(),
-            style: TextStyle(fontSize: 20),
-          ),
+              "₹ " + allProducts.documents[index].data['sellPrice'].toString(),
+              style: TextStyle(fontSize: 20),
+            ),
           );
         });
   }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:price_list/BackEndLogics/CrudAction.dart';
+import 'package:price_list/ProductListing.dart';
 
 class EditProductPage extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
@@ -30,11 +31,11 @@ class _EditProductPageState extends State<EditProductPage> {
       appBar: AppBar(
         title: Text("Update Product"),
       ),
-      body: _newProductPage(documentSnapshot),
+      body: _updateProductPage(documentSnapshot),
     );
   }
 
-  _newProductPage(DocumentSnapshot documentSnapshot) {
+  _updateProductPage(DocumentSnapshot documentSnapshot) {
     
     initializeValuesWithPrevious();
 
@@ -57,7 +58,6 @@ class _EditProductPageState extends State<EditProductPage> {
               autofocus: true,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                  // errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.amber,
                   hintText: "Name: " + documentSnapshot['productName']),
             ),
@@ -70,7 +70,6 @@ class _EditProductPageState extends State<EditProductPage> {
               onChanged: (value) => ((this.quantity = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  // errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.amber,
                   hintText: "Quantity: " + documentSnapshot['quantity']),
             ),
@@ -83,7 +82,6 @@ class _EditProductPageState extends State<EditProductPage> {
               onChanged: (value) => ((this.costPrice = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  // errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.amber,
                   hintText: "Cost: " + documentSnapshot['costPrice']),
             ),
@@ -96,7 +94,6 @@ class _EditProductPageState extends State<EditProductPage> {
               onChanged: (value) => ((this.sellPrice = value)),
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  // errorText: _validate ? " value can\'t be empty" : null,
                   focusColor: Colors.yellow,
                   hintText: "Sell: " + documentSnapshot['sellPrice']),
             ),
@@ -121,8 +118,10 @@ class _EditProductPageState extends State<EditProductPage> {
                 print(documentSnapshot.documentID) ;
 
                 crudAction.updateProductDetails(documentSnapshot.documentID, editedProductDetails) ;
+                
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
 
-                Navigator.of(context).pop() ;
               },
             )
           ],

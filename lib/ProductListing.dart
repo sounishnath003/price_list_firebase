@@ -7,7 +7,7 @@ class ProductListing extends StatefulWidget {
   final BuildContext context;
   final DocumentSnapshot documentSnapshot;
 
-  ProductListing({this.context, this.documentSnapshot});
+  ProductListing({@required this.context, @required this.documentSnapshot});
 
   _ProductListingState createState() => _ProductListingState(
       context: context, documentSnapshot: documentSnapshot);
@@ -100,20 +100,19 @@ class _ProductListingState extends State<ProductListing> {
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (BuildContext context) {
-                                  return EditProductPage(documentSnapshot: documentSnapshot,) ;
+                                  return EditProductPage(documentSnapshot: documentSnapshot) ;
                                 }
                               ));
                             },
                           ),
                           SizedBox(
-                            width: 4,
+                            width: 1,
                           ),
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
                               crudAction.deleteProduct(documentSnapshot.documentID) ;
                               Navigator.of(context).pop() ;
-                               
                             },
                           ),
                         ],
