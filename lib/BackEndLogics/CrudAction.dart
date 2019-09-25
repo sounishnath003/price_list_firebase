@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -6,7 +5,13 @@ class CrudAction {
   
   // addNewProduct methods()
   Future<void> addProductDetails(productDetails) async {
-    Firestore.instance.collection('products').add(productDetails).catchError((e) => print(e));
+    // Firestore.instance.collection('products').add(productDetails).catchError((e) => print(e));
+
+    Firestore.instance.runTransaction((Transaction crudTransaction) async {
+      CollectionReference reference = Firestore.instance.collection('products') ;
+      reference.add(productDetails) ;
+    }) ;
+
   }
 
   // updateProductDetails methods() 
