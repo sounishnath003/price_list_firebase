@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:price_list/BackEndLogics/CrudAction.dart';
+import 'package:price_list/BackEndLogics/Microservices/GeneratingPdf.dart';
 import 'package:price_list/NewProductPage.dart';
 import 'package:price_list/PdfViewerPage.dart';
 import 'package:price_list/ProductListing.dart';
@@ -63,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           IconButton(
             icon: Icon(Icons.picture_as_pdf),
-            onPressed: () => generatePdf(context),
+            onPressed: () => generatePdf(context, productsForPdfListing.documents) ,
           ),
           SizedBox(
             width: 10,
@@ -171,51 +172,53 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-generatePdf(BuildContext context) async {
-  final data = productsForPdfListing.documents;
+// generatePdf(BuildContext context, productsForPdfListing.documents) 
 
-  final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
-  pdf.addPage(pdfLib.MultiPage(
-      build: (context) => [
-            pdfLib.Column(
-              mainAxisAlignment: pdfLib.MainAxisAlignment.center,
-              crossAxisAlignment: pdfLib.CrossAxisAlignment.center,
-              children: <pdfLib.Widget>[
-              pdfLib.Text("Stock Managments Details",
-                style: pdfLib.TextStyle(
-                  fontSize: 22
-                )
-              ),
-              pdfLib.SizedBox(height: 20),
-              pdfLib.Table.fromTextArray(context: context, data: <List<String>>[
-                <String>[
-                  // "ID",
-                  "Product Name",
-                  "Quantity",
-                  "Cost Price",
-                  "Sell Price"
-                ],
-                ...data.map((item) => [
-                      // item.documentID,
-                      item.data["productName"],
-                      item.data['quantity'],
-                      item.data['costPrice'],
-                      item.data['sellPrice']
-                    ])
-              ]),
-            ])
-          ]));
+// generatePdf(BuildContext context) async {
+//   final data = productsForPdfListing.documents;
 
-  final String dir = (await getApplicationDocumentsDirectory()).path;
-  final String path = '$dir/${DateTime.now()}.pdf';
-  final File file = File(path);
-  await file.writeAsBytes(pdf.save());
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (_) => PdfViewerPage(path: path),
-    ),
-  );
-}
+//   final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
+//   pdf.addPage(pdfLib.MultiPage(
+//       build: (context) => [
+//             pdfLib.Column(
+//               mainAxisAlignment: pdfLib.MainAxisAlignment.center,
+//               crossAxisAlignment: pdfLib.CrossAxisAlignment.center,
+//               children: <pdfLib.Widget>[
+//               pdfLib.Text("Stock Managments Details",
+//                 style: pdfLib.TextStyle(
+//                   fontSize: 22
+//                 )
+//               ),
+//               pdfLib.SizedBox(height: 20),
+//               pdfLib.Table.fromTextArray(context: context, data: <List<String>>[
+//                 <String>[
+//                   // "ID",
+//                   "Product Name",
+//                   "Quantity",
+//                   "Cost Price",
+//                   "Sell Price"
+//                 ],
+//                 ...data.map((item) => [
+//                       // item.documentID,
+//                       item.data["productName"],
+//                       item.data['quantity'],
+//                       item.data['costPrice'],
+//                       item.data['sellPrice']
+//                     ])
+//               ]),
+//             ])
+//           ]));
+
+//   final String dir = (await getApplicationDocumentsDirectory()).path;
+//   final String path = '$dir/${DateTime.now()}.pdf';
+//   final File file = File(path);
+//   await file.writeAsBytes(pdf.save());
+//   Navigator.of(context).push(
+//     MaterialPageRoute(
+//       builder: (_) => PdfViewerPage(path: path),
+//     ),
+//   );
+// }
 
 class DataSearch extends SearchDelegate {
   @override
