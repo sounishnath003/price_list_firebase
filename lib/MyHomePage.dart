@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:price_list/BackEndLogics/CrudAction.dart';
 import 'package:price_list/NewProductPage.dart';
+import 'package:price_list/PdfViewerPage.dart';
 import 'package:price_list/ProductListing.dart';
+import 'package:pdf/widgets.dart' as pdfLib ;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -56,11 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(
             width: 10,
           ),
-          Icon(Icons.photo_camera),
-          SizedBox(
-            width: 10,
+          IconButton(
+            icon: Icon(Icons.picture_as_pdf),
+            onPressed: () => generatePdf(context),
           ),
-          Icon(Icons.list),
           SizedBox(
             width: 10,
           ),
@@ -164,6 +168,37 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+  generatePdf(BuildContext context) async {
+    final List<DocumentSnapshot> data = allProducts.documents.toList() ;
+
+    final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
+    pdf.addPage(
+      pdfLib.MultiPage(
+        build: (context) => [
+          pdfLib.Table.fromTextArray(
+            context: context,
+            data: <List<String>> [
+              <String>['Name' "couach", "player", "product"],
+              ...data.map((item) => [
+                item.data['productName'], item.data['quantity'], item.data['costPrice'], item.data['sellPrice']
+              ])
+            ]
+            )
+        ]
+      )
+    );
+
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    final String path = '$dir/baseball_teams.pdf';
+    final File file = File(path);
+    await file.writeAsBytes(pdf.save());
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => PdfViewerPage(path: path),
+      ),
+    );
+  }
+
 class DataSearch extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -236,3 +271,6 @@ class DataSearch extends SearchDelegate {
 }
 
 //  allProducts.documents[index].data['productName']
+
+
+// generatePdf(context, allProducts.documents)

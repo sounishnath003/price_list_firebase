@@ -120,10 +120,7 @@ class _EditProductPageState extends State<EditProductPage> {
                 crudAction.updateProductDetails(documentSnapshot.documentID, editedProductDetails) ;
                 
                 Navigator.of(context).pop();
-                dialoagTrigger(context) ;
                 Navigator.of(context).pop();
-
-
               },
             )
           ],
@@ -156,13 +153,12 @@ class _EditProductPageState extends State<EditProductPage> {
           );
         });
   }
-}
-
-
+  
   initializeValuesWithPrevious() {
     this.productName = documentSnapshot['productName'];
     this.quantity = documentSnapshot['quantity'];
     this.costPrice = documentSnapshot['costPrice'];
     this.sellPrice = documentSnapshot['sellPrice'];
   }
+
 }
