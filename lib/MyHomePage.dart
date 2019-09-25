@@ -1,14 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:price_list/BackEndLogics/CrudAction.dart';
 import 'package:price_list/BackEndLogics/Microservices/GeneratingPdf.dart';
 import 'package:price_list/NewProductPage.dart';
-import 'package:price_list/PdfViewerPage.dart';
 import 'package:price_list/ProductListing.dart';
-import 'package:pdf/widgets.dart' as pdfLib;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -171,55 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// generatePdf(BuildContext context, productsForPdfListing.documents) 
-
-// generatePdf(BuildContext context) async {
-//   final data = productsForPdfListing.documents;
-
-//   final pdfLib.Document pdf = pdfLib.Document(deflate: zlib.encode);
-//   pdf.addPage(pdfLib.MultiPage(
-//       build: (context) => [
-//             pdfLib.Column(
-//               mainAxisAlignment: pdfLib.MainAxisAlignment.center,
-//               crossAxisAlignment: pdfLib.CrossAxisAlignment.center,
-//               children: <pdfLib.Widget>[
-//               pdfLib.Text("Stock Managments Details",
-//                 style: pdfLib.TextStyle(
-//                   fontSize: 22
-//                 )
-//               ),
-//               pdfLib.SizedBox(height: 20),
-//               pdfLib.Table.fromTextArray(context: context, data: <List<String>>[
-//                 <String>[
-//                   // "ID",
-//                   "Product Name",
-//                   "Quantity",
-//                   "Cost Price",
-//                   "Sell Price"
-//                 ],
-//                 ...data.map((item) => [
-//                       // item.documentID,
-//                       item.data["productName"],
-//                       item.data['quantity'],
-//                       item.data['costPrice'],
-//                       item.data['sellPrice']
-//                     ])
-//               ]),
-//             ])
-//           ]));
-
-//   final String dir = (await getApplicationDocumentsDirectory()).path;
-//   final String path = '$dir/${DateTime.now()}.pdf';
-//   final File file = File(path);
-//   await file.writeAsBytes(pdf.save());
-//   Navigator.of(context).push(
-//     MaterialPageRoute(
-//       builder: (_) => PdfViewerPage(path: path),
-//     ),
-//   );
-// }
-
 class DataSearch extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -270,20 +216,20 @@ class DataSearch extends SearchDelegate {
     // final productDetailsList = query.isEmpty ? allProducts.documents.toList() : allProducts.documents[allProducts.documents.length].data['productName'].toString().startsWith(query) ;
 
     return ListView.builder(
-        itemCount: allProducts.documents.length,
+        itemCount: productsForPdfListing.documents.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             leading: Icon(Icons.lightbulb_outline),
             title: Text.rich(
               TextSpan(
-                text: allProducts.documents[index].data['productName'],
+                text: productsForPdfListing.documents[index].data['productName'],
                 style: TextStyle(),
               ),
             ),
             subtitle:
-                Text(allProducts.documents[index].data['quantity'].toString()),
+                Text(productsForPdfListing.documents[index].data['quantity'].toString()),
             trailing: Text(
-              "₹ " + allProducts.documents[index].data['sellPrice'].toString(),
+              "₹ " + productsForPdfListing.documents[index].data['sellPrice'].toString(),
               style: TextStyle(fontSize: 20),
             ),
           );
