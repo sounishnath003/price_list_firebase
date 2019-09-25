@@ -70,9 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: RefreshIndicator(
         onRefresh: () => refreshLists(),
         child: StreamBuilder<QuerySnapshot>(
-            // stream: _querySnapshotProducts, //Firestore.instance.collection('products').snapshots(),
             stream: Firestore.instance.collection('products').snapshots(),
             builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator(),) ;
+              }
               if (!snapshot.hasData) {
                 return Center(
                   child: CircularProgressIndicator(),
