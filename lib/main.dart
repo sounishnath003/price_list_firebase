@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:price_list/MyHomePage.dart';
+import 'package:price_list/NewProductPage.dart';
 
 void main() async {
    
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         iconTheme: IconThemeData(color: Colors.black)
       ),
-      home: MyHomePage(title: 'My Price List')
+      home:  MyHomePage(title: 'My Price List') //NewProductPage()
 
     );
   }
